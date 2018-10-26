@@ -6,6 +6,7 @@ const getHandValue = require('./blackjack-deck').getHandValue
 const whoWon = require('./blackjack-deck').whoWon
 const askToHit = require('./prompt-user').askToHit
 const formatHand = require('./blackjack-deck').formatHand
+const isBust = require('./blackjack-deck').isBust
 /*
 
 √ make deck 
@@ -33,7 +34,8 @@ function printCurrentHand(playerHand, dealerHand, dealerCardsToHide) {
 function shouldDealerHit(dealerHand, playerHand) {
   const dealerHandValue = getHandValue(dealerHand)
   const playerHandValue = getHandValue(playerHand)
-  if (dealerHandValue === 0) return false
+  if (isBust(dealerHand)) return false
+  if (isBust(playerHand)) return false
   if (dealerHandValue >= playerHandValue) return false
   // if (dealerHandValue === playerHandValue) {
 
@@ -65,8 +67,6 @@ assert.strictEqual(shouldDealerHit(['7♠', '10♥'], ['7♠', '10♥']), false,
 assert.strictEqual(shouldDealerHit(['7♠', '10♥', '8♥'], []), false, 'busted dealer should stand')
 assert.strictEqual(shouldDealerHit(['7♠', '3♥', '8♥'], ['7♠', '3♥', '8♥', '1♥']), true, 'dealer less than player should hit even over 16')
 
-assert.equal(2, 3, 'THIS SHOULD FAIL ON PURPOSE SO WE DO NOT PLAY')
-
 async function run() {
   const deck = makeDeck()
   shuffle(deck)
@@ -75,21 +75,31 @@ async function run() {
 
   while (true) {
     printCurrentHand(playerHand, dealerHand, 1)
+    const playerHandValue = getHandValue(playerHand)
+    if (playerHandValue > 21) {               // BUSTED
+      console.log(`Player has busted at ${playerHandValue}.`)
+      break;
+    }
     const shouldHit = await askToHit()
-    if (shouldHit === true) {
+    if (shouldHit === true) {                 // HIT
       console.log('Player has hit')
       const card = dealFromTop(deck, 1)[0]
       playerHand.push(card)
-    } else {
+    } else {                                  // STAND
       console.log('Player stands')
       break;
     }
   }
 
-  //   // Dealer hits if 16 or less. Stands at 17. 
+  // Dealer hits if 16 or less. Stands at 17. 
   while (true) {
     printCurrentHand(playerHand, dealerHand, 0)
-    const shouldHit = shouldDealerHit(dealerHand)
+    const dealerHandValue = getHandValue(dealerHand)
+    if (isBust(dealerHand)) {
+      console.log(`Dealer has busted at ${dealerHandValue}.`)
+      break;
+    }
+    const shouldHit = shouldDealerHit(dealerHand, playerHand)
     if (shouldHit === true) {
       console.log('Dealer has hit')
       const card = dealFromTop(deck, 1)[0]

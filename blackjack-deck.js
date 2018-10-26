@@ -33,7 +33,7 @@ function getHandValue(hand) {
 	for (let i = 0; i < hand.length; i++) {
 		sum += getCardValue(hand[i])
 	}
-	if (sum > 21) return 0
+	// if (sum > 21) return 0
 	return sum
 }
 
@@ -43,13 +43,32 @@ assert.strictEqual(getHandValue([`4♥`]), 4)
 assert.strictEqual(getHandValue([`5♥`]), 5)
 assert.strictEqual(getHandValue(['3♥', '9♠']), 12)
 assert.strictEqual(getHandValue(['3♥', '9♠', '8♠']), 20)
-assert.strictEqual(getHandValue(['3♥', '9♠', '8♠', '2♥']), 0)
-assert.strictEqual(getHandValue(['7♥', '8♥', '10♠']), 0)
+assert.strictEqual(getHandValue(['3♥', '9♠', '8♠', '2♥']), 22)
+assert.strictEqual(getHandValue(['7♥', '8♥', '10♠']), 25)
 assert.strictEqual(getHandValue(['J♣', '6♦']), 16)
+
+function isBust(hand) {
+	return getHandValue(hand) > 21
+}
+
+assert.strictEqual(isBust(['3♥', '9♠']), false)
+assert.strictEqual(isBust(['7♥', '8♥', '10♠', '8♠']), true)
 
 function whoWon(playerHand, dealerHand) {
 	const playerHandValue = getHandValue(playerHand)
 	const dealerHandValue = getHandValue(dealerHand)
+
+	if (isBust(playerHand) && isBust(dealerHand)) {
+		return 'nobody'
+	}
+
+	if (isBust(playerHand)) {
+		return 'dealer'
+	}
+
+	if (isBust(dealerHand)) {
+		return 'player'
+	}
 
 	if (playerHandValue > dealerHandValue) {
 		return 'player'
@@ -99,5 +118,6 @@ module.exports = {
 	getCardValue,
 	getHandValue,
 	whoWon,
-	formatHand
+	formatHand,
+	isBust
 }
