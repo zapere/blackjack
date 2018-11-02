@@ -25,14 +25,34 @@ assert.strictEqual(getCardValue(`J♥`), 10)
 assert.strictEqual(getCardValue(`Q♥`), 10)
 assert.strictEqual(getCardValue(`A♥`), 11)
 
+function howManyAces(hand) {
+	let Aces = 0
+	for (let i = 0; i < hand.length; i++) {
+		const card = hand[i]
+		const rank = card.slice(0, card.length - 1)
+		if (rank === "A") {
+			Aces += 1
+		}
+	}
+	return Aces
+}
+
+assert.strictEqual(howManyAces(['A♥', 'Q♥']), 1)
+assert.strictEqual(howManyAces(['A♥', 'Q♥', 'A♦']), 2)
+assert.strictEqual(howManyAces(['3♥', 'Q♥']), 0)
+
 
 function getHandValue(hand) {
-	// return hand.reduce((sum, card) => sum += getCardValue(card), 0)
-
+	let Aces = howManyAces(hand)
 	let sum = 0
 	for (let i = 0; i < hand.length; i++) {
 		sum += getCardValue(hand[i])
 	}
+	while (Aces > 0 && sum > 21) {
+		sum -= 10
+		Aces -= 1
+	}
+
 	// if (sum > 21) return 0
 	return sum
 }
@@ -46,6 +66,11 @@ assert.strictEqual(getHandValue(['3♥', '9♠', '8♠']), 20)
 assert.strictEqual(getHandValue(['3♥', '9♠', '8♠', '2♥']), 22)
 assert.strictEqual(getHandValue(['7♥', '8♥', '10♠']), 25)
 assert.strictEqual(getHandValue(['J♣', '6♦']), 16)
+assert.strictEqual(getHandValue(['A♥', '6♦']), 17)
+assert.strictEqual(getHandValue(['A♥', '8♥', '10♠']), 19)
+assert.strictEqual(getHandValue(['A♥', '8♥', 'A♠']), 20)
+assert.strictEqual(getHandValue(['A♥', '10♥', 'A♠']), 12)
+assert.strictEqual(getHandValue(['6♦', '9♠', '10♠', '7♦', '8♥', 'A♠']), 41)
 
 function isBust(hand) {
 	return getHandValue(hand) > 21

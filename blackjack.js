@@ -112,6 +112,7 @@ async function run() {
 
 
 
+
   // Hard level: Dealer doesn't hit if player is bust. 
 
   printCurrentHand(playerHand, dealerHand, 0)
