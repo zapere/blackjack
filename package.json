@@ -2,13 +2,21 @@
   "name": "league",
   "version": "1.0.0",
   "description": "",
-  "main": "August-23-2018.js",
+  "main": "index.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "start": "webpack-dev-server --open",
+    "build": "webpack"
   },
   "author": "",
   "license": "ISC",
   "dependencies": {
-    "inquirer": "^6.2.0"
+    "inquirer": "^6.2.0",
+    "lodash": "^4.17.11"
+  },
+  "devDependencies": {
+    "webpack": "^4.25.1",
+    "webpack-cli": "^3.1.2",
+    "webpack-dev-server": "^3.1.10"
   }
 }
