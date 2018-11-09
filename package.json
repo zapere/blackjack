@@ -2,7 +2,7 @@
   "name": "league",
   "version": "1.0.0",
   "description": "",
-  "main": "index.js",
+  "main": "blackjack-web.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
     "start": "webpack-dev-server --open",

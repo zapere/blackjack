@@ -117,25 +117,28 @@ assert.strictEqual(whoWon(['6♦', '9♠', '10♠', '7♦', '8♥', 'A♠'], ['A
 
 
 
-
+function formattedCard(card, hidden) {
+	if (hidden) return 'xx'
+	else return card
+}
 
 
 function formatHand(hand, numberToHide) {
 	let result = ''
 	for (let i = 0; i < hand.length; i++) {
-		if (i < numberToHide) {
-			result += `xx `
-		} else {
-			result += `${hand[i]} `
-		}
+		const hidden = i < numberToHide
+		result += formattedCard(hand[i], hidden)
+		result += ' '		
 	}
 	return result.trim()
 }
 
-assert.strictEqual(formatHand(['8♠', '2♥'], 0), '8♠ 2♥')
+assert.strictEqual(formatHand(['8♠', '2♥'], 0),       '8♠ 2♥')
 assert.strictEqual(formatHand(['8♠', '3♥', '3♥'], 3), 'xx xx xx')
-assert.strictEqual(formatHand(['8♠', '2♥'], 1), 'xx 2♥')
+assert.strictEqual(formatHand(['8♠', '2♥'], 1),       'xx 2♥')
 assert.strictEqual(formatHand(['8♠', '3♥', '3♥'], 2), 'xx xx 3♥')
+assert.strictEqual(formatHand(['8♠', '3♥', '3♥'], 4), 'xx xx xx')
+
 
 // assert.strictEqual(formatHand(['8♠', '2♥', '3♥'], 0), '8♠ 2♥ 3♥')
 
