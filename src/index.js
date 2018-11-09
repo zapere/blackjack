@@ -1,5 +1,3 @@
-const _ = require('lodash')
-
 function component() {
   let element = document.createElement('div');
 
@@ -9,5 +7,8 @@ function component() {
 
   return element;
 }
+
+// function addCardImage(card, )
+
 
 document.body.appendChild(component());
