@@ -3,6 +3,17 @@
 
 <head>
 	<title>Blackjack</title>
+	<style>
+		button:disabled {
+			background: lightgrey;
+			color: grey;
+		}
+
+		#winnerMessage {
+			position: absolute;
+			right: calc(25%);
+		}
+	</style>
 </head>
 
 <body>
@@ -13,7 +24,9 @@
 			<img src="img/cards/blue_back.png" height="180" width="120">
 		</div>
 	</div>
-	<button>Hit</button>
+	<button id="hitButton">Hit</button>
+	<button id="standButton">Stand</button>
+	<h1 id="winnerMessage">Player Won!</h1>
 	<div>
 		<h2>Dealer's Hand</h2>
 		<div id="dealerHandContainer">

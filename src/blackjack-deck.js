@@ -128,17 +128,51 @@ function formatHand(hand, numberToHide) {
 	for (let i = 0; i < hand.length; i++) {
 		const hidden = i < numberToHide
 		result += formattedCard(hand[i], hidden)
-		result += ' '		
+		result += ' '
 	}
 	return result.trim()
 }
 
-assert.strictEqual(formatHand(['8♠', '2♥'], 0),       '8♠ 2♥')
+assert.strictEqual(formatHand(['8♠', '2♥'], 0), '8♠ 2♥')
 assert.strictEqual(formatHand(['8♠', '3♥', '3♥'], 3), 'xx xx xx')
-assert.strictEqual(formatHand(['8♠', '2♥'], 1),       'xx 2♥')
+assert.strictEqual(formatHand(['8♠', '2♥'], 1), 'xx 2♥')
 assert.strictEqual(formatHand(['8♠', '3♥', '3♥'], 2), 'xx xx 3♥')
 assert.strictEqual(formatHand(['8♠', '3♥', '3♥'], 4), 'xx xx xx')
 
+function shouldDealerHit(dealerHand, playerHand) {
+	const dealerHandValue = getHandValue(dealerHand)
+	const playerHandValue = getHandValue(playerHand)
+	if (isBust(dealerHand)) return false
+	if (isBust(playerHand)) return false
+	if (dealerHandValue >= playerHandValue) return false
+	// if (dealerHandValue === playerHandValue) {
+
+
+
+	//   /*
+	//   draw             w   l
+	//   2        19      1 : 13
+	//   3        18      2 : 12
+	//   4        17      3 : 11
+	//   5        16      4 : 10  
+	//   6        15      5 : 9
+	//   7        14      6 : 8
+	//   8        13      7 : 7 ----------
+	//   9        12      8 : 6
+	//   10       11      9 : 5
+	//   10       11      9 : 5
+	//   10       11      9 : 5
+	//   10       11      9 : 5
+	//   11       10      10: 4
+	//   */
+	// }
+	return true
+}
+assert.strictEqual(shouldDealerHit(['8♠', '8♥'], ['7♠', '10♥']), true, 'dealer less than player should hit')
+assert.strictEqual(shouldDealerHit(['8♠', 'K♥'], ['7♠', '10♥']), false, 'dealer greater than player should stand')
+assert.strictEqual(shouldDealerHit(['7♠', '10♥'], ['7♠', '10♥']), false, 'dealer equal to player should stand')
+assert.strictEqual(shouldDealerHit(['7♠', '10♥', '8♥'], []), false, 'busted dealer should stand')
+assert.strictEqual(shouldDealerHit(['7♠', '3♥', '8♥'], ['7♠', '3♥', '8♥', '1♥']), true, 'dealer less than player should hit even over 16')
 
 // assert.strictEqual(formatHand(['8♠', '2♥', '3♥'], 0), '8♠ 2♥ 3♥')
 
@@ -147,5 +181,6 @@ module.exports = {
 	getHandValue,
 	whoWon,
 	formatHand,
-	isBust
+	isBust,
+	shouldDealerHit
 }
